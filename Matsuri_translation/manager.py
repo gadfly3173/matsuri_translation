@@ -17,12 +17,12 @@ celery.config_from_object('Matsuri_translation.celeryconfig')
 
 def insert_text_chunk(src_png, dst_png, text):
     reader = png.Reader(filename=src_png)
-    chunks = reader.chunks()  # ´´½¨Ò»¸öÃ¿´Î·µ»ØÒ»¸öchunkµÄÉú³ÉÆ÷
-    chunk_list = list(chunks)  # °ÑÉú³ÉÆ÷µÄËùÓĞÔªËØ±ä³Élist
+    chunks = reader.chunks()  # åˆ›å»ºä¸€ä¸ªæ¯æ¬¡è¿”å›ä¸€ä¸ªchunkçš„ç”Ÿæˆå™¨
+    chunk_list = list(chunks)  # æŠŠç”Ÿæˆå™¨çš„æ‰€æœ‰å…ƒç´ å˜æˆlist
     # print(f"target png total chunks number is {len(chunk_list)}")
     chunk_item = tuple([b'tEXt', text])
 
-    # µÚÒ»¸öchunkÊÇ¹Ì¶¨µÄIHDR£¬ÎÒÃÇ°ÑtEXt·ÅÔÚµÚ2¸öchunk
+    # ç¬¬ä¸€ä¸ªchunkæ˜¯å›ºå®šçš„IHDRï¼Œæˆ‘ä»¬æŠŠtEXtæ”¾åœ¨ç¬¬2ä¸ªchunk
     index = 1
     chunk_list.insert(index, chunk_item)
 
@@ -36,7 +36,8 @@ def execute_event(event):
     chrome_options.add_argument("--headless")
     chrome_options.add_argument(
         "--user-agent=Mozilla/5.0 (Windows NT 6.1; WOW64; Trident/7.0; AS; rv:11.0) Waterfox/56.2")
-    # chrome_options.add_argument("--proxy-server=127.0.0.1:12333")
+    # å¢åŠ UAä»¥è§¦å‘Google Analytics
+    chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:1080")
     driver = webdriver.Chrome(options=chrome_options)
     try:
         processor = TweetProcess(driver)
@@ -45,7 +46,7 @@ def execute_event(event):
         processor.scroll_page_to_tweet(event['fast'])
         filename = processor.save_screenshots()
     except:
-        driver.save_screenshot('/home/ubuntu/TTLastError.png')
+        driver.save_screenshot('/home/gadflyFang/TTLastError.png')
     finally:
         # time.sleep(5)
         driver.quit()
@@ -58,8 +59,8 @@ def execute_event_auto(event):
     chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--user-agent=TweetoasterAutomaticMode")
-    # Ôö¼ÓUAÒÔ´¥·¢Google Analytics
-    # chrome_options.add_argument("--proxy-server=127.0.0.1:12333")
+    # å¢åŠ UAä»¥è§¦å‘Google Analytics
+    chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:1080")
     driver_frontend = webdriver.Chrome(options=chrome_options)
     try:
         processor = TweetProcess(driver_frontend)

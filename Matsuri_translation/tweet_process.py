@@ -10,7 +10,7 @@ class TweetProcess:
     def __init__(self, driver):
         # chrome_options = Options()
         # chrome_options.add_argument("--headless")
-        # chrome_options.add_argument("--proxy-server=127.0.0.1:12333")
+        # chrome_options.add_argument("--proxy-server=socks5://127.0.0.1:1080")
         # self.driver = webdriver.Chrome(options=chrome_options)
         self.driver = driver
         self.afterHeadlessInstance = int(round(time.time() * 1000))
@@ -56,6 +56,9 @@ class TweetProcess:
                     path:$(obj).parents(".tweet").attr("data-permalink-path"),
                     blockbottom:$(obj).parents(".permalink-tweet-container,.js-stream-item").offset().top+$(obj).parents(".permalink-tweet-container,.js-stream-item").height()
                 }
+                if($(obj).height() < 28){
+                    item.bottom=$(obj).offset().top+31
+                }
                 ls.push(item)
             });
             $(".tco-ellipsis").remove();
@@ -81,10 +84,10 @@ class TweetProcess:
                                                   ))
         datafile.close()
         self.driver.set_window_size(self.driver.execute_script('''
-                
+
                     return $("canvas").first().height()==null?1920:640;
                     '''), self.driver.execute_script('''
-                
+
                     return $("canvas").first().height()==null?2000:$("canvas").first().height();
                     '''))
         # print(self.driver.find_element_by_css_selector('iframe').get_attribute('innerHTML'))
@@ -130,7 +133,7 @@ class TweetProcess:
             $('.follow-button').css('display','none');
             $(".tweet").css("background-color","#fff");
             $(".media-tags-container").remove();
-            
+
             ''')
         if "/status/" in self.driver.current_url:
             self.driver.execute_script(f'''

@@ -136,7 +136,7 @@ function fetch_img(task_id) {
         });
         $('#progress').val("等待服务器响应，已尝试" + count + "次");
         $("#autoprogress").text("等待服务器响应，已尝试" + count + "次");
-    }, 100)
+    }, 500)
 }
 
 var tweetpos;
@@ -385,8 +385,8 @@ $(function () {
         submit_task(true);
     });
     if (localStorage.getItem("translatetemp") == null) localStorage.setItem("translatetemp", '<div style="margin:10px 38px">\n' +
-        '<img src="img/gongfang_official.png" height="38">\n' +
-        '<div style="font-size:27px;">{T}</div>\n' +
+        '<p style="color:#777777;font-size:28px;text-shadow:2px 2px 4px #CCCCCC">由<span style="color:rgb(56,172,244)"> 猪蹄宝宝 </span>的烤推机翻译</p>\n' +
+        '<div style="font-size:23px;">{T}</div>\n' +
         '</div>')
     $("#translatetemp").val(localStorage.getItem("translatetemp"));
     $("#translatetemp").keyup(refresh_trans_div);
